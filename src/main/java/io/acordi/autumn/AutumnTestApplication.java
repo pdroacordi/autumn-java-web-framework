@@ -5,7 +5,7 @@ import io.acordi.autumn.web.AutumnWebApplication;
 public class AutumnTestApplication {
 
     public static void main(String[] args) {
-        AutumnWebApplication.run();
+        AutumnWebApplication.run(AutumnTestApplication.class);
     }
 
 }

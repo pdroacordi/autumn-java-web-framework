@@ -1,18 +1,23 @@
 package io.acordi.autumn.web;
 
 
+import io.acordi.autumn.explorer.ClassExplorer;
 import io.acordi.autumn.util.Logger;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
 
 import java.io.File;
+import java.util.List;
 import java.util.logging.Level;
 
 public class AutumnWebApplication {
 
-    public static void run(){
+    public static void run(Class<?> source){
         java.util.logging.Logger.getLogger("org.apache").setLevel(Level.OFF);
+
+        List<String> allClasses = ClassExplorer.retrieveAllClasses(source);
+
         try{
             long start = System.currentTimeMillis(), end;
             Logger.showBanner();
@@ -21,6 +26,7 @@ public class AutumnWebApplication {
             Connector connector = tomcat.getConnector();
             connector.setPort(8080);
             tomcat.setConnector(connector);
+            Logger.info(AutumnWebApplication.class, "Web container initialized on port 8080");
 
             Context ctx = tomcat.addContext("", null );
 
