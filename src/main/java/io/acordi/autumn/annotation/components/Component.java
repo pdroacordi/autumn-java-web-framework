@@ -1,4 +1,4 @@
-package io.acordi.autumn.annotations.http;
+package io.acordi.autumn.annotation.components;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,10 +6,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-
-public @interface GetMethod {
-
-    public String value() default "";
-
+@Target(ElementType.TYPE)
+public @interface Component {
 }

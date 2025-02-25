@@ -1,4 +1,4 @@
-package io.acordi.autumn.annotations.http;
+package io.acordi.autumn.annotation.http;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
