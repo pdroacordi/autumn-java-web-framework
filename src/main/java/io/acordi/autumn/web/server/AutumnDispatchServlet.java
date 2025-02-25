@@ -1,4 +1,4 @@
-package io.acordi.autumn.web;
+package io.acordi.autumn.web.server;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
