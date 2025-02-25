@@ -10,8 +10,9 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
-            <version>11.0.4</version>
+            <version>10.1.36</version>
         </dependency>
+
     </dependencies>
 
 </project>
