@@ -1,12 +1,14 @@
 package io.acordi.autumn.web.server;
 
+import io.acordi.autumn.web.http.HttpRequest;
+import io.acordi.autumn.web.http.HttpResponse;
+import io.acordi.autumn.web.http.RequestHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 public class AutumnDispatchServlet extends HttpServlet {
 
@@ -16,9 +18,16 @@ public class AutumnDispatchServlet extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
-        PrintWriter out = new PrintWriter(response.getWriter());
+        HttpRequest httpRequest = new HttpRequest.Builder()
+                .method( request.getMethod() )
+                .path( request.getRequestURI() )
+                .build();
 
-        out.println("Hello, World from Autumn!");
-        out.close();
+        HttpResponse httpResponse = RequestHandler.process(httpRequest);
+
+        RequestHandler.writeResponse(httpResponse, response);
+
+
+
     }
 }
