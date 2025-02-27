@@ -2,7 +2,6 @@ package io.acordi.autumn.core.scanner;
 
 import io.acordi.autumn.annotation.http.GetMethod;
 import io.acordi.autumn.annotation.http.PostMethod;
-import io.acordi.autumn.core.processor.AnnotationProcessor;
 import io.acordi.autumn.util.ClassPathScanner;
 import io.acordi.autumn.util.Logger;
 import io.acordi.autumn.web.routing.RouteRegistry;
@@ -32,7 +31,6 @@ public class ControllerScanner {
             }
         }
         Logger.info(ControllerScanner.class, "Route Registry completed successfully");
-
     }
 
 }
