@@ -61,7 +61,7 @@ public class RequestHandler {
 
     public static void writeResponse(HttpResponse response, HttpServletResponse servletResponse) throws IOException {
         servletResponse.setStatus(response.getStatus());
-        servletResponse.setContentType("text/plain");
+        servletResponse.setContentType("application/json");
         PrintWriter out = servletResponse.getWriter();
         out.print(response.getBody());
     }
