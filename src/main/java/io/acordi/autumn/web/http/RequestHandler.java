@@ -1,5 +1,6 @@
 package io.acordi.autumn.web.http;
 
+import com.google.gson.Gson;
 import io.acordi.autumn.util.Logger;
 import io.acordi.autumn.web.routing.Route;
 import io.acordi.autumn.web.routing.RouteRegistry;
@@ -18,18 +19,27 @@ public class RequestHandler {
 
         Route route = RouteRegistry.getRoute(method, uri);
 
+        Gson gson = new Gson();
+
         if( route == null ) {
             Logger.warn(RequestHandler.class, "No route found for : " + method+":"+uri);
             return new HttpResponse.Builder()
                     .status(404)
-                    .body("Route not found: " + uri)
+                    .body(gson.toJson( "Route not found: " + uri ))
                     .build();
         }
         try {
             Object result = ControllerInvoker.invoke(route);
+            if( result instanceof ResponseEntity<?> responseEntity){
+                return new HttpResponse.Builder()
+                        .status(responseEntity.getStatus())
+                        .body( gson.toJson( responseEntity.getBody() ) )
+                        .build();
+            }
+
             return new HttpResponse.Builder()
                     .status(200)
-                    .body(result.toString())
+                    .body( gson.toJson(result) )
                     .build();
         }catch (InstantiationException | NoSuchMethodException e) {
             Logger.error(RequestHandler.class, "Could not get instance of controller: "+e.getMessage());
@@ -38,7 +48,7 @@ public class RequestHandler {
         }
         return new HttpResponse.Builder()
                 .status(500)
-                .body("Internal server error: " + uri)
+                .body( gson.toJson("Internal server error: " + uri) )
                 .build();
     }
 
