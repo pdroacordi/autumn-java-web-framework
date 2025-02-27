@@ -1,12 +1,14 @@
 package io.acordi.autumn.web.http;
 
+import jakarta.servlet.ServletInputStream;
+
 public class HttpRequest {
 
     private final String method;
     private final String path;
-    private final String body;
+    private final ServletInputStream body;
 
-    public HttpRequest(Builder builder) {
+    private HttpRequest(Builder builder) {
         this.method = builder.method;
         this.path = builder.path;
         this.body = builder.body;
@@ -21,14 +23,14 @@ public class HttpRequest {
         return path;
     }
 
-    public String getBody() {
+    public ServletInputStream getBody() {
         return body;
     }
 
     public static class Builder {
         private String method;
         private String path;
-        private String body;
+        private ServletInputStream body;
 
         public Builder method(final String method) {
             this.method = method;
@@ -38,7 +40,7 @@ public class HttpRequest {
             this.path = path;
             return this;
         }
-        public Builder body(final String body) {
+        public Builder body(final ServletInputStream body) {
             this.body = body;
             return this;
         }

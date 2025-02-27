@@ -21,6 +21,7 @@ public class AutumnDispatchServlet extends HttpServlet {
         HttpRequest httpRequest = new HttpRequest.Builder()
                 .method( request.getMethod() )
                 .path( request.getRequestURI() )
+                .body( request.getInputStream() )
                 .build();
 
         HttpResponse httpResponse = RequestHandler.process(httpRequest);

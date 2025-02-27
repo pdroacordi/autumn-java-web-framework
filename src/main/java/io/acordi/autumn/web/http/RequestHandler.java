@@ -1,6 +1,7 @@
 package io.acordi.autumn.web.http;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import io.acordi.autumn.util.Logger;
 import io.acordi.autumn.web.routing.Route;
 import io.acordi.autumn.web.routing.RouteRegistry;
@@ -29,7 +30,7 @@ public class RequestHandler {
                     .build();
         }
         try {
-            Object result = ControllerInvoker.invoke(route);
+            Object result = ControllerInvoker.invoke(route, request);
             if( result instanceof ResponseEntity<?> responseEntity){
                 return new HttpResponse.Builder()
                         .status(responseEntity.getStatus())
@@ -45,6 +46,12 @@ public class RequestHandler {
             Logger.error(RequestHandler.class, "Could not get instance of controller: "+e.getMessage());
         }catch (InvocationTargetException | IllegalAccessException e){
             Logger.error(RequestHandler.class, "Could not invoke controller method: "+e.getMessage());
+        }catch (JsonSyntaxException e){
+            Logger.warn(RequestHandler.class, "Failed to convert json body: "+e.getMessage());
+            return new HttpResponse.Builder()
+                    .status(400)
+                    .body( gson.toJson("Bad Request: JSON syntax error.") )
+                    .build();
         }
         return new HttpResponse.Builder()
                 .status(500)
