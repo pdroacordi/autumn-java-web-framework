@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface RestController {
 
-
+    public String value() default "";
 
 }
