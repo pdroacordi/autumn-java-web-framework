@@ -1,6 +1,7 @@
 package io.acordi.autumn.web.http;
 
 import com.google.gson.Gson;
+import io.acordi.autumn.annotation.http.RequestBody;
 import io.acordi.autumn.core.context.ApplicationContext;
 import io.acordi.autumn.util.Logger;
 import io.acordi.autumn.web.routing.Route;
@@ -50,7 +51,7 @@ public class ControllerInvoker {
             Class<?> paramType = parameter.getType();
             Object arg = null;
 
-            if( parameter.isAnnotationPresent( io.acordi.autumn.annotation.http.RequestBody.class ) ) {
+            if( parameter.isAnnotationPresent( RequestBody.class ) ) {
                 String body = readBytesFromRequestBody(request);
                 arg = gson.fromJson(body, paramType);
             }
@@ -76,4 +77,5 @@ public class ControllerInvoker {
             return "";
         }
     }
+
 }
