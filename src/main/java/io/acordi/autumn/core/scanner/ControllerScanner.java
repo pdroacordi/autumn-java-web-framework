@@ -14,9 +14,9 @@ import java.util.List;
 
 public class ControllerScanner {
 
-    public static void scanControllers( Class<?> origin ){
+    public static void scanAndRegister( Class<?> origin ){
         List<Class<?>> controllers = ClassPathScanner.findAnnotatedClasses(origin.getPackageName(), RestController.class);
-
+        ApplicationContext context = ApplicationContext.getInstance();
         Logger.info(ControllerScanner.class, "Indexing routes...");
         for (Class<?> controller : controllers) {
             /*
@@ -26,10 +26,10 @@ public class ControllerScanner {
                 (and for dependency injection). Decided to leave it here for dependency injection matters.
             */
             try {
-                Object controllerInstance = ApplicationContext.getBean(controller);
+                Object controllerInstance = context.getBean(controller);
                 if (controllerInstance == null) {
                     controllerInstance = controller.getDeclaredConstructor().newInstance();
-                    ApplicationContext.registerBean(controller, controllerInstance);
+                    context.registerBean(controller, controllerInstance);
                 }
             } catch (NoSuchMethodException | InstantiationException | IllegalStateException
                      | IllegalAccessException | InvocationTargetException e){

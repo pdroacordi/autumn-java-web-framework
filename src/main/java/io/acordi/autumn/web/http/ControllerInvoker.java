@@ -20,19 +20,8 @@ public class ControllerInvoker {
 
     public static Object invoke(Route route, HttpRequest request) throws InvocationTargetException, IllegalAccessException,
             NoSuchMethodException, InstantiationException {
-        /*
-            I was really in doubt if I should register the controllers here or at ControllerScanner class
-            If I did id at ControllerScanner, all the controllers would have instances at the very moment
-            of the start of the application, which performs better in terms of response time of the api.
-            On the other hand, there is no need to overwhelm the memory with unused instances. Decided to
-            do it here.
-        */
-        Class<?> controllerClass = route.getController();
-        Object controllerInstance = ApplicationContext.getBean( controllerClass );
-        if( controllerInstance == null ) {
-            controllerInstance = controllerClass.getDeclaredConstructor().newInstance();
-            ApplicationContext.registerBean(controllerClass, controllerInstance);
-        }
+        ApplicationContext context = ApplicationContext.getInstance();
+        Object controllerInstance = context.getBean(route.getController());
         Method method = route.getControllerMethod();
         return handleMethod(controllerInstance, method, request);
     }
