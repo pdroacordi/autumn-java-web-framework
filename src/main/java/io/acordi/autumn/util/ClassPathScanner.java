@@ -39,7 +39,8 @@ public class ClassPathScanner {
 
     public static List<Class<?>> findAnnotatedClasses(String packageName, Class<? extends Annotation> annotation) {
         return scanPackage(packageName).stream()
-                .filter(cls -> cls.isAnnotationPresent(annotation))
+                .filter(cls -> !cls.isAnnotation())
+                .filter(cls -> hasAnnotation(cls, annotation))
                 .collect(Collectors.toList());
     }
 
@@ -93,6 +94,18 @@ public class ClassPathScanner {
             Logger.error(ClassPathScanner.class, "Class not found: " + className);
             return Optional.empty();
         }
+    }
+
+    private static boolean hasAnnotation(Class<?> cls, Class<? extends Annotation> targetAnnotation) {
+        if (cls.isAnnotationPresent(targetAnnotation)) {
+            return true;
+        }
+        for (Annotation annotation : cls.getAnnotations()) {
+            if (annotation.annotationType().isAnnotationPresent(targetAnnotation)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
